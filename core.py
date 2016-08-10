@@ -65,14 +65,21 @@ class Grid:
         A Grid is in a valid state if all blocks (including the ActiveBlock)
         are in bounds and not overlapping.
         '''
-        raise NotImplementedError("Replace this line with your implementation")
+        if condition:
+            return True
+        else:
+            return False
 
     def is_occupied(self, p):
         ''' (Grid, (int, int)) -> bool
 
         Returns True iff the posn `p` is occupied by a non-active block.
         '''
-        raise NotImplementedError("Replace this line with your implementation")
+        for b in self.blocks:
+            for bp in b.posns:
+                if bp == p:
+                    return True
+        return False
 
     def _drop_above(self, r):
         return Grid([Block([(x, y if y < r else y - 1) for x, y in b.posns])
