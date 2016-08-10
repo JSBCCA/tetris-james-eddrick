@@ -41,7 +41,13 @@ class Grid:
         or right. Returns None if an invalid Direction is provided.
         A Direction is either 'left' or 'right'.
         '''
-        raise NotImplementedError("Replace this line with your implementation")
+        x, y, block = self.current_block
+        if dir == 'left':
+            return Grid(self.blocks, ActiveBlock(x - 1, y, block))
+        elif dir == 'right':
+            return Grid(self.blocks, ActiveBlock(x + 1, y, block))
+        else:
+            return None
 
     def rotate(self):
         ''' Grid -> Grid
