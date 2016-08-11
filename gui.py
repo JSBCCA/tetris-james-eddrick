@@ -2,7 +2,6 @@ from core import *
 import tkinter
 import random
 SCALE = 20
-TICK_RATE = 300
 
 
 class Tetris:
@@ -23,7 +22,10 @@ class Tetris:
         self.parent.bind('<Down>', self.drop)
         self.parent.bind('n', self.new_game)
         self.parent.bind('q', self.quit)
-        self.parent.after(TICK_RATE, self.keep_dropping)
+        self.parent.after(self.tick_rate(), self.keep_dropping)
+
+    def tick_rate(self):
+        return 300 - (self.blocks * 3)
 
     def quit(self, event):
         self.parent.destroy()
@@ -31,7 +33,7 @@ class Tetris:
     def new_game(self, event):
         self.g = Grid([], ActiveBlock(WIDTH // 2, HEIGHT - 1, new_block()))
         self.blocks = 0
-        self.parent.after(TICK_RATE, self.keep_dropping)
+        self.parent.after(self.tick_rate(), self.keep_dropping)
 
     def move_left(self, event):
         g = self.g.move('left')
@@ -62,14 +64,14 @@ class Tetris:
         g = self.g.drop()
         if g.is_valid():
             self.g = g
-            self.parent.after(TICK_RATE, self.keep_dropping)
+            self.parent.after(self.tick_rate(), self.keep_dropping)
         else:
             self.blocks += 1
             self.g = Grid(self.g.place_block().blocks,
                           ActiveBlock(WIDTH // 2, HEIGHT - 1, new_block()))
             self.g = self.g.clear_full_rows()
             if self.g.is_valid():
-                self.parent.after(TICK_RATE, self.keep_dropping)
+                self.parent.after(self.tick_rate(), self.keep_dropping)
         self.draw()
 
     def draw(self):
