@@ -152,8 +152,7 @@ def new_block():
     Returns a new block randomly chosen from the L, backwards L, |, T, S, and
     backwards S.
     '''
-    return random.choice([Block([(0, 2), (0, 1), (0, 0), (1, 0)]),
-                          Block([(1, 2), (1, 1), (1, 0), (0, 0)]),
+    return random.choice([Block([(-1, 0), (0, 0), (1, 0), (1, -1)]),
                           Block([(0, 3), (0, 2), (0, 1), (0, 0)]),
                           Block([(-1, 1), (0, 1), (1, 1), (0, 0)]),
                           Block([(-1, 0), (0, 0), (1, 0), (1, 1)]),
