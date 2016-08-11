@@ -1,7 +1,7 @@
 from core import *
 import tkinter
 import random
-SCALE = 16
+SCALE = 20
 TICK_RATE = 300
 
 
@@ -105,12 +105,16 @@ class Tetris:
             self._draw_posn(
                 (self.g.current_block.x + px, self.g.current_block.y + py))
 
+    def random_color(self):
+        return random.choice(['red', 'blue', 'yellow', 'orange', 'purple',
+                              'green', 'light blue', 'pink', 'brown'])
+
     def _draw_posn(self, p):
         x, y = p
         self.canvas.create_rectangle(x * SCALE, (HEIGHT * SCALE) - (y * SCALE),
                                      x * SCALE + SCALE // 2, (HEIGHT * SCALE) -
                                      (y * SCALE + SCALE // 2),
-                                     fill='blue')
+                                     fill=self.random_color())
 
 
 if __name__ == '__main__':
