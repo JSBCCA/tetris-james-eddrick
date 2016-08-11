@@ -6,6 +6,7 @@ SCALE = 20
 
 class Tetris:
     def __init__(self, parent):
+        self.gameover = False
         self.blocks = 0
         self.parent = parent
         self.canvas = tkinter.Canvas(parent,
@@ -31,33 +32,38 @@ class Tetris:
         self.parent.destroy()
 
     def new_game(self, event):
+        self.gameover = False
         self.g = Grid([], ActiveBlock(WIDTH // 2, HEIGHT - 1, new_block()))
         self.blocks = 0
         self.parent.after(self.tick_rate(), self.keep_dropping)
 
     def move_left(self, event):
-        g = self.g.move('left')
-        if g.is_valid():
-            self.g = g
-        self.draw()
+        if not self.gameover:
+            g = self.g.move('left')
+            if g.is_valid():
+                self.g = g
+            self.draw()
 
     def move_right(self, event):
-        g = self.g.move('right')
-        if g.is_valid():
-            self.g = g
-        self.draw()
+        if not self.gameover:
+            g = self.g.move('right')
+            if g.is_valid():
+                self.g = g
+            self.draw()
 
     def rotate(self, event):
-        g = self.g.rotate()
-        if g.is_valid():
-            self.g = g
-        self.draw()
+        if not self.gameover:
+            g = self.g.rotate()
+            if g.is_valid():
+                self.g = g
+            self.draw()
 
     def drop(self, event):
-        g = self.g.drop()
-        if g.is_valid():
-            self.g = g
-        self.draw()
+        if not self.gameover:
+            g = self.g.drop()
+            if g.is_valid():
+                self.g = g
+            self.draw()
 
     def keep_dropping(self):
         print(self.g.blocks, self.g.current_block)
@@ -72,6 +78,8 @@ class Tetris:
             self.g = self.g.clear_full_rows()
             if self.g.is_valid():
                 self.parent.after(self.tick_rate(), self.keep_dropping)
+            else:
+                self.gameover = True
         self.draw()
 
     def draw(self):
