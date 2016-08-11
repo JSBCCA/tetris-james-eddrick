@@ -7,6 +7,7 @@ SCALE = 20
 class Tetris:
     def __init__(self, parent):
         self.gameover = False
+        self.paused = False
         self.blocks = 0
         self.parent = parent
         self.canvas = tkinter.Canvas(parent,
@@ -23,10 +24,18 @@ class Tetris:
         self.parent.bind('<Down>', self.drop)
         self.parent.bind('n', self.new_game)
         self.parent.bind('q', self.quit)
+        self.parent.bind('p', self.pause)
         self.parent.after(self.tick_rate(), self.keep_dropping)
 
+    def pause(self, event):
+        if self.paused:
+            self.paused = False
+            self.parent.after(self.tick_rate(), self.keep_dropping)
+        else:
+            self.paused = True
+
     def tick_rate(self):
-        return 300 - (self.blocks * 2)
+        return 350 - (self.blocks)
 
     def quit(self, event):
         self.parent.destroy()
@@ -38,48 +47,53 @@ class Tetris:
         self.parent.after(self.tick_rate(), self.keep_dropping)
 
     def move_left(self, event):
-        if not self.gameover:
-            g = self.g.move('left')
-            if g.is_valid():
-                self.g = g
-            self.draw()
+        if not self.paused:
+            if not self.gameover:
+                g = self.g.move('left')
+                if g.is_valid():
+                    self.g = g
+                self.draw()
 
     def move_right(self, event):
-        if not self.gameover:
-            g = self.g.move('right')
-            if g.is_valid():
-                self.g = g
-            self.draw()
+        if not self.paused:
+            if not self.gameover:
+                g = self.g.move('right')
+                if g.is_valid():
+                    self.g = g
+                self.draw()
 
     def rotate(self, event):
-        if not self.gameover:
-            g = self.g.rotate()
-            if g.is_valid():
-                self.g = g
-            self.draw()
+        if not self.paused:
+            if not self.gameover:
+                g = self.g.rotate()
+                if g.is_valid():
+                    self.g = g
+                self.draw()
 
     def drop(self, event):
-        if not self.gameover:
-            g = self.g.drop()
-            if g.is_valid():
-                self.g = g
-            self.draw()
+        if not self.paused:
+            if not self.gameover:
+                g = self.g.drop()
+                if g.is_valid():
+                    self.g = g
+                self.draw()
 
     def keep_dropping(self):
         g = self.g.drop()
-        if g.is_valid():
-            self.g = g
-            self.parent.after(self.tick_rate(), self.keep_dropping)
-        else:
-            self.blocks += 1
-            self.g = Grid(self.g.place_block().blocks,
-                          ActiveBlock(WIDTH // 2, HEIGHT - 1, new_block()))
-            self.g = self.g.clear_full_rows()
-            if self.g.is_valid():
+        if not self.paused:
+            if g.is_valid():
+                self.g = g
                 self.parent.after(self.tick_rate(), self.keep_dropping)
             else:
-                self.gameover = True
-        self.draw()
+                self.blocks += 1
+                self.g = Grid(self.g.place_block().blocks,
+                              ActiveBlock(WIDTH // 2, HEIGHT - 1, new_block()))
+                self.g = self.g.clear_full_rows()
+                if self.g.is_valid():
+                    self.parent.after(self.tick_rate(), self.keep_dropping)
+                else:
+                    self.gameover = True
+            self.draw()
 
     def draw(self):
         self.canvas.delete(tkinter.ALL)
