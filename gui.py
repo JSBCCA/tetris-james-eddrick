@@ -1,7 +1,7 @@
 from core import *
 import tkinter
 import random
-SCALE = 20
+SCALE = 16
 TICK_RATE = 300
 
 
@@ -58,14 +58,15 @@ class Tetris:
         self.draw()
 
     def keep_dropping(self):
+        print(self.g.blocks, self.g.current_block)
         g = self.g.drop()
         if g.is_valid():
             self.g = g
             self.parent.after(TICK_RATE, self.keep_dropping)
         else:
             self.blocks += 1
-            self.g = Grid(self.g.place_block().blocks, ActiveBlock(
-                WIDTH // 2, HEIGHT - 1, new_block()))
+            self.g = Grid(self.g.place_block().blocks,
+                          ActiveBlock(WIDTH // 2, HEIGHT - 1, new_block()))
             self.g = self.g.clear_full_rows()
             if self.g.is_valid():
                 self.parent.after(TICK_RATE, self.keep_dropping)

@@ -94,7 +94,7 @@ class Grid:
         ccb = self.connect(self.current_block)
         for b in self.blocks + [ccb]:
             for x, y in b.posns:
-                if not ((x >= 0 and x < WIDTH) and (y >= 0 and y <= HEIGHT)):
+                if not ((x >= 0 and x < WIDTH) and (y >= 0)):
                     return False
         for p in ccb.posns:
             temp = self.is_occupied(p)
