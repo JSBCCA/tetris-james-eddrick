@@ -26,7 +26,7 @@ class Tetris:
         self.parent.after(self.tick_rate(), self.keep_dropping)
 
     def tick_rate(self):
-        return 300 - (self.blocks * 3)
+        return 300 - (self.blocks * 2)
 
     def quit(self, event):
         self.parent.destroy()
@@ -66,7 +66,6 @@ class Tetris:
             self.draw()
 
     def keep_dropping(self):
-        print(self.g.blocks, self.g.current_block)
         g = self.g.drop()
         if g.is_valid():
             self.g = g
@@ -90,17 +89,17 @@ class Tetris:
 
     def _draw_stripes(self):
         for x in range(0, WIDTH * SCALE, 40):
-            self.canvas.create_rectangle(x,
+            self.canvas.create_rectangle(5 + x,
                                          0,
-                                         x + SCALE // 2,
+                                         5 + x + SCALE // 2,
                                          HEIGHT * SCALE,
                                          fill='light grey',
                                          outline='white')
 
         gx = self.g.current_block.x * SCALE + SCALE // 5
-        self.canvas.create_rectangle(gx,
+        self.canvas.create_rectangle(5 + gx,
                                      0,
-                                     gx + SCALE // 10,
+                                     5 + gx + SCALE // 10,
                                      HEIGHT * SCALE,
                                      fill='red2',
                                      outline='white')
@@ -121,10 +120,11 @@ class Tetris:
 
     def _draw_posn(self, p):
         x, y = p
-        self.canvas.create_rectangle(x * SCALE, (HEIGHT * SCALE) - (y * SCALE),
-                                     x * SCALE + SCALE // 2, (HEIGHT * SCALE) -
-                                     (y * SCALE + SCALE // 2),
-                                     fill=self.random_color())
+        self.canvas.create_rectangle(
+            5 + x * SCALE, (HEIGHT * SCALE) - (y * SCALE),
+            5 + x * SCALE + SCALE // 2,
+            (HEIGHT * SCALE) - (y * SCALE + SCALE // 2),
+            fill=self.random_color())
 
 
 if __name__ == '__main__':
