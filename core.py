@@ -16,7 +16,7 @@ posns is a list of number pairs.
 from collections import namedtuple
 import random
 
-HEIGHT = 40
+HEIGHT = 30
 WIDTH = 15
 
 Block = namedtuple('Block', 'posns')
