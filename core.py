@@ -10,6 +10,8 @@ A Block is collection of occupied points.
 
 An ActiveBlock is a block (oriented independent of the grid), with an x and y
 coordinates.
+
+posns is a list of number pairs.
 '''
 from collections import namedtuple
 import random
@@ -58,6 +60,19 @@ class Grid:
         return Grid(self.blocks, ActiveBlock(x, y, Block(
             [(y, -x) for x, y in block.posns])))
 
+    def connect(self, b):
+        ''' block -> block
+
+        Connects the active block to its center.
+        '''
+        x = self.current_block.x
+        y = self.current_block.y
+        block = self.current_block.block
+        new_posns = []
+        for bp in block.posns:
+            new_posns.append((bp[0] + x, bp[1] + y))
+        return Block(new_posns)
+
     def is_valid(self):
         ''' Grid -> bool
 
@@ -65,10 +80,13 @@ class Grid:
         A Grid is in a valid state if all blocks (including the ActiveBlock)
         are in bounds and not overlapping.
         '''
-        if condition:
-            return True
-        else:
-            return False
+        ccb = self.connect(self.current_block)
+        for b in self.blocks + [ccb]:
+            for x, y in b.posns:
+                if not ((x >= 0 and x < WIDTH) and (y >= 0 and y <= HEIGHT)):
+                    return False
+        ...
+        return True
 
     def is_occupied(self, p):
         ''' (Grid, (int, int)) -> bool

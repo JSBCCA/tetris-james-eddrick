@@ -113,6 +113,20 @@ def test_valid_corners_placed():
         WIDTH // 2, HEIGHT // 2, Block([(0, 0)]))).is_valid()
 
 
+def test_valid_placed_overlap_placed():
+    assert not Grid([Block([(1, 0)]), Block([(1, 0)])], ActiveBlock(
+        0, 0, Block([(0, 0)]))).is_valid()
+    assert Grid([Block([(2, 0)]), Block([(1, 0)])],
+                ActiveBlock(0, 0, Block([(0, 0)]))).is_valid()
+
+
+def test_valid_active_overlap_placed():
+    assert not Grid([Block([(1, 0)]), Block([(1, 1)])], ActiveBlock(
+        1, 0, Block([(0, 1)]))).is_valid()
+    assert Grid([Block([(1, 0)]), Block([(0, 1)])],
+                ActiveBlock(1, 0, Block([(0, 1)]))).is_valid()
+
+
 def test_empty_is_occupied_all():
     g = Grid([], ActiveBlock(0, 0, Block([(0, 0)])))
     assert not any(g.is_occupied((x, y))
