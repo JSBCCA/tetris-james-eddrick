@@ -65,13 +65,24 @@ class Grid:
 
         Connects the active block to its center.
         '''
-        x = self.current_block.x
-        y = self.current_block.y
-        block = self.current_block.block
+        x = b.x
+        y = b.y
+        block = b.block
         new_posns = []
         for bp in block.posns:
             new_posns.append((bp[0] + x, bp[1] + y))
         return Block(new_posns)
+
+    def is_occupied(self, p):
+        ''' (Grid, (int, int)) -> bool
+
+        Returns True iff the posn `p` is occupied by a non-active block.
+        '''
+        for b in self.blocks:
+            for bp in b.posns:
+                if bp == p:
+                    return True
+        return False
 
     def is_valid(self):
         ''' Grid -> bool
@@ -85,19 +96,11 @@ class Grid:
             for x, y in b.posns:
                 if not ((x >= 0 and x < WIDTH) and (y >= 0 and y <= HEIGHT)):
                     return False
-        ...
+        for p in ccb.posns:
+            temp = self.is_occupied(p)
+            if temp is True:
+                return False
         return True
-
-    def is_occupied(self, p):
-        ''' (Grid, (int, int)) -> bool
-
-        Returns True iff the posn `p` is occupied by a non-active block.
-        '''
-        for b in self.blocks:
-            for bp in b.posns:
-                if bp == p:
-                    return True
-        return False
 
     def _drop_above(self, r):
         return Grid([Block([(x, y if y < r else y - 1) for x, y in b.posns])

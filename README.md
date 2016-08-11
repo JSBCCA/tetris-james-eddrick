@@ -9,6 +9,13 @@ The project has two implementation files:
 and one test file:
 - core_test.py
 
+# To Test
+
+    $ py.test
+
+# To Play
+
+    $ python3 gui.py
 
 # Objective 1
 ## Implementing the Grid class
@@ -45,15 +52,3 @@ Change the code in gui.py so that the game speeds up over time instead of using 
 
 Change the code in gui.py to maintain and display users score.
 You can decide how the game is scored and how the score should be displayed.
-
-# Before You Begin
-
-    $ python3 -m pip install pytest
-
-# To Test
-
-    $ pytest
-
-# To Play
-
-    $ python3 gui.py
